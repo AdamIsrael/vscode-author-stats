@@ -3,6 +3,7 @@
 	"displayName": "Statistics for Authors",
 	"description": "Useful statistics for authors who write in Markdown.",
 	"publisher": "adamisrael",
+	"license": "Apache-2.0",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/AdamIsrael/vscode-author-stats"
