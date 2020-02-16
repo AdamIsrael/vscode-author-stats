@@ -2,6 +2,14 @@
 	"name": "author-stats",
 	"displayName": "Statistics for Authors",
 	"description": "Useful statistics for authors who write in Markdown.",
+	"publisher": "adamisrael",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/AdamIsrael/vscode-author-stats"
+	},
+	"bugs": {
+		"url": "https://github.com/AdamIsrael/vscode-author-stats/issues"
+	},
 	"version": "1.0.0",
 	"engines": {
 		"vscode": "^1.42.0"
@@ -33,5 +41,8 @@
 		"mocha": "^7.0.1",
 		"typescript": "^3.7.5",
 		"vscode-test": "^1.3.0"
+	},
+	"dependencies": {
+		"vsce": "^1.73.0"
 	}
 }
