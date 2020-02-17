@@ -18,6 +18,10 @@ None
 
 Initial release!
 
+### Credits
+
+This is loosely based on the [vscode-wordcount](https://github.com/microsoft/vscode-wordcount) sample extention.
+
 ### For more information
 
 * [Github](http://code.visualstudio.com/docs/languages/markdown)
