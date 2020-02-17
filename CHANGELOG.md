@@ -1,8 +1,10 @@
 # Change Log
 
-All notable changes to the "author-stats" extension will be documented in this file.
-
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+## [1.0.1]
+- Ignore Pandoc title block
+- Ignore YAML front matter
+- Ignore TOML front matter
+- Ignore JSON front matter
 
 ## [1.0.0]
 

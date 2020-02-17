@@ -10,7 +10,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
 	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "author-stats" is now active!');
+	console.log('Congratulations, your extension "author-stats1" is now active!');
 
     // create a new word counter
     let wordCounter = new WordCounter();
@@ -65,12 +65,14 @@ export class WordCounter {
 
         // Only update status if an MD file
         if (doc.languageId === "markdown") {
-            let wordCount = this._getWordCount(doc);
-            let commentCount = this._getCommentWordCount(doc);
+
+            let totalCount = this._getWordCount(doc.getText());
+            let preview = this._renderMarkdown(doc.getText());
+            let wordCount = this._getWordCount(preview);
 
             // Update the status bar
-            statusBarItemVisible.text = wordCount !== 1 ? `$(preview) ${wordCount - commentCount} Visible Words` : '$(preview) 1 Word';
-            statusBarItemTotal.text = wordCount !== 1 ? `$(pencil) ${wordCount} Total Words` : '$(pencil) 1 Word';
+            statusBarItemVisible.text = wordCount !== 1 ? `$(preview) ${wordCount} Visible Words` : '$(preview) 1 Word';
+            statusBarItemTotal.text = wordCount !== 1 ? `$(pencil) ${totalCount} Total Words` : '$(pencil) 1 Word';
 
             statusBarItemVisible.show();
             statusBarItemTotal.show();
@@ -80,31 +82,36 @@ export class WordCounter {
         }
     }
 
-    public _getCommentWordCount(doc: vscode.TextDocument): number {
-        // Get the count of just the comments
-        let docContent = doc.getText();
+    public _renderMarkdown(doc: string): string {
+        // Remove the non-visible text from the document
+        // TODO: Can we use the Markdown Preview to render the visible text?
 
-        let matches = docContent.match(/<!--[^>]*-->/g);
-        let wordcount = 0;
+        // YAML Front Matter
+        doc = doc.replace(/---[^>]*---/g, '');
 
-        if (matches) {
-            matches.forEach(function (comment) {
-                wordcount = wordcount + comment.split(" ").length;
-            });
-        }
-        return wordcount;
+        // TOML Front Matter
+        doc = doc.replace(/\+\+\+[^>]*\+\+\+/g, '');
+
+        // JSON Front Matter
+        doc = doc.replace(/\{[^>]*\}/g, '');
+
+        // Pandoc
+        doc = doc.replace(/%\s+[\w\s();]+/g, '');
+
+        // Markdown comment blocks
+        doc = doc.replace(/<!--[^>]*-->/g, '');
+
+        return doc;
     }
 
-    public _getWordCount(doc: vscode.TextDocument): number {
-        let docContent = doc.getText();
-
+    public _getWordCount(doc: string): number {
         // Parse out unwanted whitespace so the split is accurate
-        docContent = docContent.replace(/(< ([^>]+)<)/g, '').replace(/\s+/g, ' ');
-        docContent = docContent.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+        doc = doc.replace(/(< ([^>]+)<)/g, '').replace(/\s+/g, ' ');
+        doc = doc.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
 
         let wordCount = 0;
-        if (docContent !== "") {
-            wordCount = docContent.split(" ").length;
+        if (doc !== "") {
+            wordCount = doc.split(" ").length;
         }
 
         return wordCount;
